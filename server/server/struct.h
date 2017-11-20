@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "const.h"
 
 struct PARAM {
 	char key[128];

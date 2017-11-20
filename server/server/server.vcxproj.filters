@@ -27,6 +27,18 @@
     <ClInclude Include="maya.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="bich.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bang.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="huy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thang.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
