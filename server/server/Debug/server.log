@@ -1,3 +1,5 @@
-﻿  server.cpp
+﻿  struct.h
+  server.cpp
+  Generating Code...
   server.vcxproj -> E:\Bach\workspace\Cxxxxx\ltmang\network_programming_20171\server\Debug\server.exe
   server.vcxproj -> E:\Bach\workspace\Cxxxxx\ltmang\network_programming_20171\server\Debug\server.pdb (Partial PDB)

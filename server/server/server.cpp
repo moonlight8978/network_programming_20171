@@ -2,8 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "winsock2.h"
-#include "iostream"
+#include "maya.h"
 
 DWORD WINAPI Thread(LPVOID lpParams);
 
@@ -21,6 +20,8 @@ void remove_client(SOCKET* clients, int& total_clients, SOCKET client) {
 }
 
 int main() {
+	int PORT = 8888;
+
 	WSADATA wsa_data;
 	WSAStartup(MAKEWORD(2, 2), &wsa_data);
 	SOCKET listener = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -28,11 +29,11 @@ int main() {
 	SOCKADDR_IN addr;
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = htonl(INADDR_ANY);
-	addr.sin_port = htons(8000);
+	addr.sin_port = htons(PORT);
 
 	bind(listener, (SOCKADDR*)&addr, sizeof(addr));
 	listen(listener, 5);
-	std::cout << "Listening...";
+	printf("Listening on port %d...\n", PORT);
 	SOCKET client;
 
 	while (true) {
@@ -60,13 +61,14 @@ DWORD WINAPI Thread(LPVOID lpParams) {
 	if (res == 0 || res == SOCKET_ERROR) {
 		return 0;
 	}
+	buff[res] = 0;
 
-	buff[res - 1] = 0;
+	REQUEST request;
+	REQUEST_INFO request_info;
 
-	std::cout << res << std::endl;
-	std::cout << strlen(buff) << std::endl;
-	std::cout << buff;
-
+	split_request(buff, request);
+	get_request_info(request.request_line, request.body, request_info);
+	
 	char* msg = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8\n\n<html><b>Temp</b><br><i>log.txt</i><br></html>";
 	send(client, msg, strlen(msg), 0);
 	closesocket(client);
