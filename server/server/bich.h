@@ -14,23 +14,17 @@
 //		request.total_headers: 2
 void split_request(char* buffer, REQUEST& request) {
 	char* pointer;
-	int len;
 	int i = 0;
-	request.headers = new char*[20];
 
 	pointer = strtok(buffer, "\n");
 	while (pointer != NULL) {
-		len = strlen(pointer);
 		if (i == 0) {
-			request.request_line = new char[len];
 			strcpy(request.request_line, pointer);
-		}
-		else {
-			request.headers[request.total_headers] = new char[len];
+		} else {
 			strcpy(request.headers[request.total_headers], pointer);
-			request.total_headers++;
+			request.total_headers += 1;
 		}
-		i++;
+		i += 1;
 		pointer = strtok(NULL, "\n");
 		if ((strlen(pointer) == 1) && (int(*pointer) == 13)) // \r\n, ASCII code: 13
 			break;
@@ -39,8 +33,12 @@ void split_request(char* buffer, REQUEST& request) {
 	pointer = strtok(NULL, "\0");
 	// Kiem tra request body
 	if (pointer != NULL) {
-		len = strlen(pointer);
-		request.body = new char[len];
+		request.body = new char[strlen(pointer)];
 		strcpy(request.body, pointer);
 	}
+}
+
+// Ham tao phan hoi cho client
+void create_response() {
+
 }
