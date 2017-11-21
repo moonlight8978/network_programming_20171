@@ -3,7 +3,7 @@
 // Ham tach method, path, params cua request
 //
 // @param request_line [String] can tach ra thanh method, path, http_version
-// @param body [String] body POST (params) can tach, neu la GET thi body NULL
+// @param body [String, NULL] body POST (params) can tach, neu la GET thi body NULL
 // @param request_info [REQUEST_INFO] luu ket qua tach'
 // @return [void]
 // 

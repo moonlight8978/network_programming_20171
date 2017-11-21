@@ -21,6 +21,7 @@ void remove_client(CLIENT* clients, int& total_clients, SOCKET client) {
 // @note: KHONG DUOC SUA HAM MAIN
 int main() {
 	int PORT = 8888;
+	define_routes();
 
 	WSADATA wsa_data;
 	WSAStartup(MAKEWORD(2, 2), &wsa_data);
@@ -84,12 +85,16 @@ DWORD WINAPI Thread(LPVOID lpParams) {
 			i + 1, strlen(request.headers[i]), request.headers[i]
 		);
 	}
-
+	std::cout << is_valid_route("GET", "/people");
+	std::cout << is_valid_route("GET", "/loz");
+	RESULT** results;
+	char response[2048];
+	create_response(HEADER_CREATED, results, 5, response);
+	
 	//get_request_info(request.request_line, request.body, request_info);
 	//query_file(request_info.path, request_info.params, request_info.total_params);
 	
-	char* msg = "HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8\n\n<html><b>Temp</b><br><i>log.txt</i><br></html>";
-	send(client.socket, msg, strlen(msg), 0);
+	send(client.socket, response, strlen(response), 0);
 	closesocket(client.socket);
 	remove_client(clients, total_clients, client.socket);
 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
-#include "const.h"
 #include "struct.h"
+#include "const.h"
+#include "route.h"
 
 #include "bich.h"
 #include "bang.h"

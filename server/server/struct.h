@@ -1,5 +1,11 @@
 #include "stdafx.h"
 
+struct ROUTE {
+	char* path;
+	bool get;
+	bool post;
+};
+
 struct CLIENT {
 	SOCKET socket;    
 	SOCKADDR_IN addr;
