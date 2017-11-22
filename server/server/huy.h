@@ -15,7 +15,7 @@
 //   => request_info.method: "GET"
 //      request_info.path: "/"
 //      request_info.http_version: "HTTP/1.1"
-//		request_info.params: [{ key: "q", value: 2 }, { key: "r", value: 3 }]
+//		  request_info.params: [{ key: "q", value: 2 }, { key: "r", value: 3 }]
 void get_request_info(char* request_line, char* params, REQUEST_INFO& request_info) {
   // code
 }

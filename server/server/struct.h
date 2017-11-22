@@ -34,6 +34,6 @@ struct REQUEST {
 struct PERSON {
 	char last_name[64];
 	char first_name[64];
-	int age;
+	int year_of_birth;
 	char email[64];
 };
