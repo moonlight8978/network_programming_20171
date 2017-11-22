@@ -6,7 +6,7 @@
 // @param body [String, NULL] body POST (params) can tach, neu la GET thi body NULL
 // @param request_info [REQUEST_INFO] luu ket qua tach'
 // @return [void]
-// 
+//
 // @example
 //   request_line = GET /?q=2&r=3 HTTP/1.1
 //   body = NULL
@@ -17,7 +17,7 @@
 //      request_info.http_version: "HTTP/1.1"
 //		request_info.params: [{ key: "q", value: 2 }, { key: "r", value: 3 }]
 void get_request_info(char* request_line, char* params, REQUEST_INFO& request_info) {
-	// code
+  // code
 }
 
 // Ham lay gia tri header theo ten field
@@ -34,8 +34,8 @@ void get_request_info(char* request_line, char* params, REQUEST_INFO& request_in
 //    char* header_value
 //    get_header(headers, total_headers, "AAAA", header_value)
 //    => header_value: NULL
-//    get_header(headers, total_headers, "Content-Type", header_value) 
+//    get_header(headers, total_headers, "Content-Type", header_value)
 //    => header_value: "application/x-www-form-urlencoded"
 void get_header(char** headers, int total_headers, char* header_value) {
-	// code
+  // code
 }

@@ -35,7 +35,7 @@ int main() {
 	bind(listener, (SOCKADDR*)&addr, sizeof(addr));
 	listen(listener, 5);
 	printf("Listening on port %d...\n", PORT);
-	
+
 	while (true) {
 		SOCKADDR_IN client_addr;
 		int len = sizeof(client_addr);
@@ -81,24 +81,22 @@ DWORD WINAPI Thread(LPVOID lpParams) {
 	printf("Headers: (total %d)\n", request.total_headers);
 	for (int i = 0; i < request.total_headers; i += 1) {
 		printf(
-			"No.%d (%d): %s\n", 
+			"No.%d (%d): %s\n",
 			i + 1, strlen(request.headers[i]), request.headers[i]
 		);
 	}
 	std::cout << is_valid_route("GET", "/people");
 	std::cout << is_valid_route("GET", "/loz");
-	RESULT** results;
+	PERSON** results;
 	char response[2048];
 	create_response(HEADER_CREATED, results, 5, response);
-	
+
 	//get_request_info(request.request_line, request.body, request_info);
 	//query_file(request_info.path, request_info.params, request_info.total_params);
-	
+
 	send(client.socket, response, strlen(response), 0);
 	closesocket(client.socket);
 	remove_client(clients, total_clients, client.socket);
 
 	return 0;
 }
-
-

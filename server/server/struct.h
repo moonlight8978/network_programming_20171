@@ -7,7 +7,7 @@ struct ROUTE {
 };
 
 struct CLIENT {
-	SOCKET socket;    
+	SOCKET socket;
 	SOCKADDR_IN addr;
 };
 
@@ -18,7 +18,7 @@ struct PARAM {
 
 struct REQUEST_INFO {
 	char method[10];       // vd: "GET" hoac "POST"
-	char path[128];        // vd: "/" hoac "/abc" .... 
+	char path[128];        // vd: "/" hoac "/abc" ....
 	char http_version[20]; // vd: "HTTP/1.1"
 	PARAM params[20];      // mang params
 	int total_params = 0;  // so luong params
@@ -31,7 +31,9 @@ struct REQUEST {
 	char* body = NULL;      // Phan than request
 };
 
-
-struct RESULT {
-
+struct PERSON {
+	char last_name[64];
+	char first_name[64];
+	int age;
+	char email[64];
 };

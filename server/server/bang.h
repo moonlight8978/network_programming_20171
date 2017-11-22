@@ -2,14 +2,14 @@
 // Viet ham lay thoi gian hien tai, dia chi IP cua request
 
 // Ham lay thoi gian hien tai
-// 
+//
 // @param current_time [String] xau luu ket qua
 // @return [void]
 //
 // @example
 //   char current_time[128]
 //   get_current_time(current_time)
-//   => current_time: "2017/11/21 10:25AM" (vi du, thuc te co the khac)   
+//   => current_time: "2017/11/21 10:25AM" (vi du, thuc te co the khac)
 void get_current_time(char* current_time) {
   //code
 }
@@ -45,6 +45,5 @@ void log_request(SOCKADDR_IN& client_addr) {
   strcat(result, current_time);
   strcat(result, ip_addr);
   
-  // ghi result vao file log.txt
-  //code
+  write_file("log.txt", result);
 }
