@@ -9,25 +9,29 @@
 //
 // @example
 //   REQUEST_INFO request_info
-//   get_request_info("GET /?q=2&r=3 HTTP/1.1", "a=2&c=3", request_info)
+//   get_request_info("GET /?q=2&r=3&c= HTTP/1.1", "a=2&b=3", request_info)
 //   => request_info.method: "GET"
 //      request_info.path: "/"
 //      request_info.http_version: "HTTP/1.1"
 //		  request_info.params: [{ key: "q", value: 2 }, { key: "r", value: 3 }]
-//      ("a=2&c=3" bi bo qua vi GET khong ho tro body)
+//      ("a=2&b=3" bi bo qua vi GET khong ho tro body, key c bi bo vi ko co gia tri)
 //
-//   get_request_info("POST /?a=2 HTTP/1.1", "q=2&r=3", request_info)
+//   get_request_info("POST /?a=2&b=3 HTTP/1.1", "c=&q=2&r=3", request_info)
 //   => request_info.method: "POST"
 //      request_info.path: "/"
 //      request_info.http_version: "HTTP/1.1"
-//      request_info.params: [
+//      request_info.params: [ 
 //        { key: "a", value: 2 }, 
+//        { key: "b", value: 3 }, 
 //        { key: "q", value: 2 }, 
 //        { key: "r", value: 3 }
 //      ]
+//      (key c bi bo? vi khong co gia tri)
 //
 //   get_request_info("POST /?a=2&b=3 HTTP/1.1", NULL, request_info)
 //   get_request_info("POST / HTTP/1.1", NULL, request_info)
+//   get_request_info("POST / HTTP/1.1", NULL, request_info)
+//   get_request_info("GET /?a=2&b=3 HTTP/1.1", NULL, request_info)
 //   get_request_info("GET /?a=2&b=3 HTTP/1.1", NULL, request_info)
 //   get_request_info("GET / HTTP/1.1", NULL, request_info)
 void get_request_info(char* request_line, char* body, REQUEST_INFO& request_info) {
