@@ -3,10 +3,10 @@
 #include "const.h"
 #include "route.h"
 
+#include "thang.h"
 #include "bich.h"
 #include "bang.h"
 #include "huy.h"
-#include "thang.h"
 
 // NOTE: STRUCT xem tai file "/struct.h"
 // NOTE: HANG SO xem tai file "/const.h"

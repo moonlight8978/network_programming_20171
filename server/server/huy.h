@@ -3,20 +3,34 @@
 // Ham tach method, path, params cua request
 //
 // @param request_line [String] can tach ra thanh method, path, http_version
-// @param body [String, NULL] body POST (params) can tach, neu la GET thi body NULL
+// @param body [String, NULL] body can tach thanh params
 // @param request_info [REQUEST_INFO] luu ket qua tach'
 // @return [void]
 //
 // @example
-//   request_line = GET /?q=2&r=3 HTTP/1.1
-//   body = NULL
 //   REQUEST_INFO request_info
-//   get_request_info(request_line, body, request_info)
+//   get_request_info("GET /?q=2&r=3 HTTP/1.1", "a=2&c=3", request_info)
 //   => request_info.method: "GET"
 //      request_info.path: "/"
 //      request_info.http_version: "HTTP/1.1"
 //		  request_info.params: [{ key: "q", value: 2 }, { key: "r", value: 3 }]
-void get_request_info(char* request_line, char* params, REQUEST_INFO& request_info) {
+//      ("a=2&c=3" bi bo qua vi GET khong ho tro body)
+//
+//   get_request_info("POST /?a=2 HTTP/1.1", "q=2&r=3", request_info)
+//   => request_info.method: "POST"
+//      request_info.path: "/"
+//      request_info.http_version: "HTTP/1.1"
+//      request_info.params: [
+//        { key: "a", value: 2 }, 
+//        { key: "q", value: 2 }, 
+//        { key: "r", value: 3 }
+//      ]
+//
+//   get_request_info("POST /?a=2&b=3 HTTP/1.1", NULL, request_info)
+//   get_request_info("POST / HTTP/1.1", NULL, request_info)
+//   get_request_info("GET /?a=2&b=3 HTTP/1.1", NULL, request_info)
+//   get_request_info("GET / HTTP/1.1", NULL, request_info)
+void get_request_info(char* request_line, char* body, REQUEST_INFO& request_info) {
   // code
 }
 
