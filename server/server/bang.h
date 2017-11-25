@@ -11,7 +11,9 @@
 //   get_current_time(current_time)
 //   => current_time: "2017/11/21 10:25AM" (vi du, thuc te co the khac)
 void get_current_time(char* current_time) {
-  //code
+  time_t time_now = time(0);
+  strcpy(current_time, ctime(&time_now));
+  current_time[strlen(current_time) - 1] = 0;
 }
 
 // Ham phan giai dia chi IP
@@ -25,7 +27,10 @@ void get_current_time(char* current_time) {
 //   get_ip_addr(client_addr, ip_addr)
 //   => ip_addr: "127.0.0.1" (vi du, thuc te co the khac)
 void get_ip_addr(SOCKADDR_IN& client_addr, char* ip_addr) {
-  //code
+  if (client_addr.sin_family == AF_INET) 
+  {
+    strcpy(ip_addr, inet_ntoa(client_addr.sin_addr));
+  }
 }
 
 // Ghi nhat ky, goi den `#get_current_time`, `#get_ip_addr` de lay ket qua,
@@ -36,14 +41,17 @@ void get_ip_addr(SOCKADDR_IN& client_addr, char* ip_addr) {
 //
 // @example
 //   log_request(client_addr)
-//   => "log.txt": "2017/11/21 10:25AM 127.0.0.1"
+//   => "log.txt": "127.0.0.1 2017/11/21 10:25AM"
 void log_request(SOCKADDR_IN& client_addr) {
   char current_time[128], ip_addr[128], result[256];
 
   get_current_time(current_time);
   get_ip_addr(client_addr, ip_addr);
+  strcpy(result, ip_addr);
+  strcat(result, " ");
   strcat(result, current_time);
-  strcat(result, ip_addr);
+  // @debug
+  printf("Log: %s\n", result);
   
-  write_file("log.txt", result);
+  // write_file("log.txt", result);
 }

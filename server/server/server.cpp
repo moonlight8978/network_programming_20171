@@ -60,7 +60,7 @@ int main() {
 // @note: CODE LOGIC, TEST cho vao ham nay
 DWORD WINAPI Thread(LPVOID lpParams) {
   CLIENT client = *((CLIENT*)lpParams);
-  //log_request(client.addr);
+  log_request(client.addr);
 
   char buff[2048];
   int res;
@@ -69,12 +69,12 @@ DWORD WINAPI Thread(LPVOID lpParams) {
     return 0;
   }
   buff[res] = 0;
-  printf("Buffer: %s", buff);
 
   REQUEST request;
   REQUEST_INFO request_info;
   split_request(buff, request);
-  // @debug
+
+  // @debug #split_request
   printf("Request line: %s\n", request.request_line);
   if (request.body != NULL) {
     printf("Request body: %s\n", request.body);
@@ -92,7 +92,24 @@ DWORD WINAPI Thread(LPVOID lpParams) {
   char response[2048];
   create_response(HEADER_CREATED, results, 5, response);
 
-  //get_request_info(request.request_line, request.body, request_info);
+  get_request_info(request.request_line, request.body, request_info);
+
+  // @debug #get_request_info
+  printf("Phuong thuc: %s\n", request_info.method);
+  printf("Path: %s\n", request_info.path);
+  printf("Params (%d):\n", request_info.total_params);
+  for (int i = 0; i < request_info.total_params; i += 1) {
+    printf("Params key: %s, value: %s\n", request_info.params[i].key, request_info.params[i].value);
+  }
+
+  // @debug #get_header
+  char content_type[128];
+  get_header(request.headers, request.total_headers, "Content-Type", content_type);
+  char host[128];
+  get_header(request.headers, request.total_headers, "Host", host);
+  printf("Header Content-Type co gia tri: %s\n", content_type);
+  printf("Header Host co gia tri: %s\n", host);
+  
   //query_file(request_info.path, request_info.params, request_info.total_params);
 
   send(client.socket, response, strlen(response), 0);

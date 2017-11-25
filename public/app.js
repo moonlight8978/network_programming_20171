@@ -1,4 +1,4 @@
-const URL = 'http://localhost:8888/?q=2&y=4';
+const URL = 'http://localhost:8888/';
 
 $(document)
   .on('submit', '#form', function (event) {

@@ -9,8 +9,10 @@
 
 #include <stdio.h>
 #include <tchar.h>
-
+#include <ctime>
+#include <string.h>
 // TODO: reference additional headers your program requires here
 
 #include "iostream"
 #include "winsock2.h"
+#include "ws2tcpip.h"
