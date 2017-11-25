@@ -81,12 +81,13 @@ void get_request_info(char* request_line, char* body, REQUEST_INFO& request_info
     request_info.total_params = getParams(body, request_info);  
   }
   else{ // GET
+	char params[128];
     char *token = strtok(b, "?");
     strcpy(request_info.path, token);
     token = strtok(NULL, "");
-    strcpy(body, token);
+    strcpy(params, token);
 
-    request_info.total_params = getParams(body, request_info);
+    request_info.total_params = getParams(params, request_info);
   }
 }
 
