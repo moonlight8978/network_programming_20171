@@ -50,8 +50,6 @@ void log_request(SOCKADDR_IN& client_addr) {
   strcpy(result, ip_addr);
   strcat(result, " ");
   strcat(result, current_time);
-  // @debug
-  printf("Log: %s\n", result);
   
-  // write_file("log.txt", result);
+  write_file("/log.txt", result);
 }

@@ -75,42 +75,58 @@ DWORD WINAPI Thread(LPVOID lpParams) {
   split_request(buff, request);
 
   // @debug #split_request
-  printf("Request line: %s\n", request.request_line);
-  if (request.body != NULL) {
-    printf("Request body: %s\n", request.body);
-  }
-  printf("Headers: (total %d)\n", request.total_headers);
-  for (int i = 0; i < request.total_headers; i += 1) {
-    printf(
-      "No.%d (%d): %s\n",
-      i + 1, strlen(request.headers[i]), request.headers[i]
-    );
-  }
-  std::cout << is_valid_route("GET", "/people");
-  std::cout << is_valid_route("GET", "/loz");
-  PERSON** results;
-  char response[2048];
-  create_response(HEADER_CREATED, results, 5, response);
+  // printf("Request line: %s\n", request.request_line);
+  // if (request.body != NULL) {
+  //   printf("Request body: %s\n", request.body);
+  // }
+  // printf("Headers: (total %d)\n", request.total_headers);
+  // for (int i = 0; i < request.total_headers; i += 1) {
+  //   printf(
+  //     "No.%d (%d): %s\n",
+  //     i + 1, strlen(request.headers[i]), request.headers[i]
+  //   );
+  // }
+  // std::cout << is_valid_route("GET", "/people");
+  // std::cout << is_valid_route("GET", "/loz");
 
   get_request_info(request.request_line, request.body, request_info);
 
   // @debug #get_request_info
-  printf("Phuong thuc: %s\n", request_info.method);
-  printf("Path: %s\n", request_info.path);
-  printf("Params (%d):\n", request_info.total_params);
-  for (int i = 0; i < request_info.total_params; i += 1) {
-    printf("Params key: %s, value: %s\n", request_info.params[i].key, request_info.params[i].value);
-  }
+  // printf("Phuong thuc: %s\n", request_info.method);
+  // printf("Path: %s\n", request_info.path);
+  // printf("Params (%d):\n", request_info.total_params);
+  // for (int i = 0; i < request_info.total_params; i += 1) {
+  //   printf("Params key: %s, value: %s\n", request_info.params[i].key, request_info.params[i].value);
+  // }
 
   // @debug #get_header
-  char content_type[128];
-  get_header(request.headers, request.total_headers, "Content-Type", content_type);
-  char host[128];
-  get_header(request.headers, request.total_headers, "Host", host);
-  printf("Header Content-Type co gia tri: %s\n", content_type);
-  printf("Header Host co gia tri: %s\n", host);
-  
-  //query_file(request_info.path, request_info.params, request_info.total_params);
+  // char content_type[128];
+  // get_header(request.headers, request.total_headers, "Content-Type", content_type);
+  // char host[128];
+  // get_header(request.headers, request.total_headers, "Host", host);
+  // printf("Header Content-Type co gia tri: %s\n", content_type);
+  // printf("Header Host co gia tri: %s\n", host);
+
+  char response[2048];
+
+  if (is_valid_route(request_info.method, request_info.path)) {
+    PERSON results[20];
+    int total_results;
+    total_results = query_file(
+      request_info.path, 
+      request_info.params, 
+      request_info.total_params, 
+      results
+    );
+
+    if (total_results != SEARCH_NO_RESULT) {
+      create_response(HEADER_OK, results, total_results, response);
+    } else {
+      // no result found
+    }
+  } else {
+    // wrong route
+  }
 
   send(client.socket, response, strlen(response), 0);
   closesocket(client.socket);

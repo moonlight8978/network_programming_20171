@@ -2,6 +2,7 @@
 
 const int SEARCH_FAIL = -1;
 const int SEARCH_SUCCESS = 0;
+const int SEARCH_NO_RESULT = 0;
 ROUTE ROUTES[20];
 int TOTAL_ROUTES;
 
