@@ -65,6 +65,23 @@ void split_request(char* buffer, REQUEST& request) {
   }
 }
 
+// 
+void create_table(PERSON* results, int total_results, char* body) {
+  char line[256];
+  if (total_results > 0 ) {
+    strcpy(body, "<table><tr><td>Ho</td><td>Ten</td><td>Nam sinh</td><td>Email</td></tr>");
+    for (int i = 0; i < total_results; i += 1) {
+      sprintf(
+        line,
+        "<tr><td>%s</td><td>%s</td><td>%d</td><td>%s</td></tr>",
+        results[i].last_name, results[i].first_name, results[i].year_of_birth, results[i].email
+      );
+      strcat(body, line);
+    }
+    strcat(body, "</table>");
+  }
+}
+
 // Ham tao phan hoi cho client
 //
 // @todo vong lap dung ket qua tu ham `#query_file`
@@ -74,24 +91,12 @@ void split_request(char* buffer, REQUEST& request) {
 // @param total_results [int] so luong ket qua
 // @param resposne [String] luu ket qua
 // @return [void]
-void create_response(char* header, PERSON* results, int total_results, char* response) {
+void create_response(char* header, char* body, char* response) {
   strcpy(response, header);
-  char body[1024];
-  char line[256];
-
-  strcpy(body, "<html><body><table><tr><td>Ho</td>");
-  strcat(body, "<td>Ten</td><td>Nam sinh</td><td>Email</td></tr>");
-  for (int i = 0; i < total_results; i += 1) {
-    sprintf(
-      line,
-      "<tr><td>%s</td><td>%s</td><td>%d</td><td>%s</td></tr>",
-      results[i].last_name, results[i].first_name, results[i].year_of_birth, results[i].email
-    );
-    strcat(body, line);
-  }
-  strcat(body, "</table></body></html>");
-
+  strcat(response, "\n\n");
+  strcat(response, "<html><body>");
   strcat(response, body);
+  strcat(response, "</body></html>");
 }
 
 // Doc 1 dong tu file, fix \n khi fgets
@@ -244,4 +249,46 @@ void write_file(char* file_path, char* content) {
 	file = fopen(file_name, "a");
 	fprintf(file, "%s\n", content);
 	fclose(file);
+}
+
+// Ham luu mot person moi
+bool create_person(char* path, PARAM* params, int total_params) {
+  bool created = false;
+  PERSON new_idol;
+
+  for (int i = 0; i < total_params; i += 1) {
+    if (strcmp(params[i].key, "first_name") == 0) {
+      strcpy(new_idol.first_name, params[i].value);
+    } else if (strcmp(params[i].key, "last_name") == 0) {
+      strcpy(new_idol.last_name, params[i].value);
+    } else if (strcmp(params[i].key, "year_of_birth") == 0) {
+      new_idol.year_of_birth = atoi(params[i].value);
+    } else if (strcmp(params[i].key, "email") == 0) {
+      strcpy(new_idol.email, params[i].value);
+    }
+  }
+
+  if (
+    (strlen(new_idol.last_name) > 0)
+    && (strlen(new_idol.first_name) > 0)
+    && (new_idol.year_of_birth != 0)
+    && (strlen(new_idol.email) > 0)
+  ) {
+    created = true;
+    char write_data[256];
+    sprintf(
+      write_data, 
+      "%s\n%s\n%d\n%s",
+      new_idol.last_name, new_idol.first_name, new_idol.year_of_birth, new_idol.email
+    );
+
+    printf("%s\n", write_data);
+
+    char file_name[64];
+    sprintf(file_name, "%s.txt", path);
+    printf("%s\n", file_name);
+    write_file(file_name, write_data);
+  }
+
+  return created;
 }

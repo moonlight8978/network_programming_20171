@@ -108,24 +108,46 @@ DWORD WINAPI Thread(LPVOID lpParams) {
   // printf("Header Host co gia tri: %s\n", host);
 
   char response[2048];
+  char body[2048];
 
   if (is_valid_route(request_info.method, request_info.path)) {
-    PERSON results[20];
-    int total_results;
-    total_results = query_file(
-      request_info.path, 
-      request_info.params, 
-      request_info.total_params, 
-      results
-    );
+    if (strcmp(request_info.method, "GET") == 0) {
+      // GET request
+      PERSON results[20];
+      int total_results;
+      total_results = query_file(
+        request_info.path, 
+        request_info.params, 
+        request_info.total_params, 
+        results
+      );
 
-    if (total_results != SEARCH_NO_RESULT) {
-      create_response(HEADER_OK, results, total_results, response);
+      if (total_results != SEARCH_NO_RESULT) {
+        create_table(results, total_results, body);
+        create_response(HEADER_OK, body, response);
+      } else {
+        create_response(HEADER_NOT_FOUND, BODY_NOT_FOUND, response);
+      }
+    } else if (strcmp(request_info.method, "POST") == 0) {
+      // POST request
+      bool created = create_person(
+        request_info.path, 
+        request_info.params, 
+        request_info.total_params
+      );
+
+      if (created) {
+        create_response(HEADER_CREATED, BODY_CREATED, response);
+      } else {
+        create_response(HEADER_BAD_REQUEST, BODY_BAD_REQUEST, response);
+      }
     } else {
-      // no result found
+      create_response(HEADER_NOT_FOUND, METHOD_NOT_SUPPORT, response);
     }
+    
   } else {
-    // wrong route
+    // route not found
+    create_response(HEADER_NOT_FOUND, BODY_NOT_FOUND, response);
   }
 
   send(client.socket, response, strlen(response), 0);
