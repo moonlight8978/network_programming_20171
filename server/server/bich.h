@@ -107,7 +107,7 @@ char* get_line(FILE* file, char* des, int des_size) {
 }
 
 // Kiem tra xem mot `PERSON` co thoa man dieu kien hay khong
-bool is_matched_conditions(PERSON idol, PERSON condition) {
+bool is_matched_conditions(PERSON& idol, PERSON& condition) {
   if (
     (strlen(condition.last_name) > 0)
     && (strcmp(condition.last_name, idol.last_name) != 0)
@@ -291,4 +291,51 @@ bool create_person(char* path, PARAM* params, int total_params) {
   }
 
   return created;
+}
+
+// Xu ly route "/"
+void route_index(REQUEST_INFO& request_info, char* response) {
+  char body[2048] = "";
+
+  if (strcmp(request_info.method, "GET") == 0) {
+    strcpy(body, "<h1>Hello</h1>");
+    create_response(HEADER_OK, body, response);
+  }
+}
+
+// Xy ly route "/idols"
+void route_idols(REQUEST_INFO& request_info, char* response) {
+  char body[2048] = "";
+  
+  if (strcmp(request_info.method, "GET") == 0) {
+    // GET request
+    PERSON results[20];
+    int total_results;
+    total_results = query_file(
+      request_info.path, 
+      request_info.params, 
+      request_info.total_params, 
+      results
+    );
+
+    if (total_results != SEARCH_NO_RESULT) {
+      create_table(results, total_results, body);
+      create_response(HEADER_OK, body, response);
+    } else {
+      create_response(HEADER_NOT_FOUND, BODY_NOT_FOUND, response);
+    }
+  } else if (strcmp(request_info.method, "POST") == 0) {
+    // POST request
+    bool created = create_person(
+      request_info.path, 
+      request_info.params, 
+      request_info.total_params
+    );
+
+    if (created) {
+      create_response(HEADER_CREATED, BODY_CREATED, response);
+    } else {
+      create_response(HEADER_BAD_REQUEST, BODY_BAD_REQUEST, response);
+    }
+  }
 }
