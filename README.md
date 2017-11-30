@@ -33,3 +33,7 @@ struct PERSON {
   char email[64];
 }
 ```
+
+## License
+ 
+The MIT License (MIT)

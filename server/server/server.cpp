@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "maya.h"
 
+CRITICAL_SECTION cs;
+
 DWORD WINAPI Thread(LPVOID lpParams);
 
 CLIENT clients[64];
@@ -60,7 +62,9 @@ int main() {
 // @note: CODE LOGIC, TEST cho vao ham nay
 DWORD WINAPI Thread(LPVOID lpParams) {
   CLIENT client = *((CLIENT*)lpParams);
+  EnterCriticalSection(&cs);
   log_request(client.addr);
+  LeaveCriticalSection(&cs);
 
   char buff[2048];
   int res;
@@ -110,11 +114,13 @@ DWORD WINAPI Thread(LPVOID lpParams) {
   char response[2048] = "";
 
   if (is_valid_route(request_info.method, request_info.path)) {
+    EnterCriticalSection(&cs);
     if (strcmp(request_info.path, "/") == 0) {
       route_index(request_info, response);
     } else if (strcmp(request_info.path, "/idols") == 0) {
       route_idols(request_info, response);
     }
+    LeaveCriticalSection(&cs);
   } else {
     create_response(HEADER_NOT_FOUND, BODY_NOT_FOUND, response);
   }
