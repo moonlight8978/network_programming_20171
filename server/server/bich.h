@@ -112,7 +112,7 @@ bool is_matched_conditions(PERSON& idol, PERSON& condition) {
     (strlen(condition.last_name) > 0)
     && (strcmp(condition.last_name, idol.last_name) != 0)
   ) {
-    printf("Tach last_name");
+//    printf("Tach last_name");
     return false;
   }
 
@@ -120,7 +120,7 @@ bool is_matched_conditions(PERSON& idol, PERSON& condition) {
     (strlen(condition.first_name) > 0)
     && (strcmp(condition.first_name, idol.first_name) != 0)
   ) {
-    printf("Tach first_name");
+//    printf("Tach first_name");
     return false;
   }
 
@@ -128,7 +128,7 @@ bool is_matched_conditions(PERSON& idol, PERSON& condition) {
     (strlen(condition.email) > 0)
     && (strcmp(condition.email, idol.email) != 0)
   ) {
-    printf("Tach email");
+//    printf("Tach email");
     return false;
   }
 
@@ -136,7 +136,7 @@ bool is_matched_conditions(PERSON& idol, PERSON& condition) {
     (condition.year_of_birth != 0)
     && (condition.year_of_birth != idol.year_of_birth)
   ) {
-    printf("Tach last_name");
+//    printf("Tach last_name");
     return false;
   }
 
@@ -163,9 +163,6 @@ int query_file(char* file_path, PARAM* conditions, int total_conditions, PERSON*
   PERSON condition;
 
   for (int i = 0; i < total_conditions; i += 1) {
-    // @debug
-    printf("%d condition\n", i + 1);
-
     if (strcmp(conditions[i].key, "first_name") == 0) {
       strcpy(condition.first_name, conditions[i].value);
     } else if (strcmp(conditions[i].key, "last_name") == 0) {
@@ -177,14 +174,8 @@ int query_file(char* file_path, PARAM* conditions, int total_conditions, PERSON*
     }
   }
 
-  printf("%d", strlen(condition.last_name));
-  printf("%s", condition.last_name);
-
   char file_name[64];
   sprintf(file_name, ".%s.txt", file_path);
-
-  // @debug
-  printf("%s\n", file_name);
 
   FILE* file;
   file = fopen(file_name, "r");
@@ -201,16 +192,6 @@ int query_file(char* file_path, PARAM* conditions, int total_conditions, PERSON*
 
     if (is_matched_conditions(p, condition)) {
       results[total_results] = p;
-
-      // @debug
-      printf(
-        "%s %s %d %s\n",
-        results[total_results].last_name,
-        results[total_results].first_name,
-        results[total_results].year_of_birth,
-        results[total_results].email
-      );
-
       total_results += 1;
     }
   }
@@ -282,11 +263,8 @@ bool create_person(char* path, PARAM* params, int total_params) {
       new_idol.last_name, new_idol.first_name, new_idol.year_of_birth, new_idol.email
     );
 
-    printf("%s\n", write_data);
-
     char file_name[64];
     sprintf(file_name, "%s.txt", path);
-    printf("%s\n", file_name);
     write_file(file_name, write_data);
   }
 

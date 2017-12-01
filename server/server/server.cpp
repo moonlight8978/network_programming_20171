@@ -23,6 +23,7 @@ void remove_client(CLIENT* clients, int& total_clients, SOCKET client) {
 // @note: KHONG DUOC SUA HAM MAIN
 int main() {
   int PORT = 8888;
+  InitializeCriticalSection(&cs);
   define_routes();
 
   WSADATA wsa_data;
@@ -96,12 +97,12 @@ DWORD WINAPI Thread(LPVOID lpParams) {
   get_request_info(request.request_line, request.body, request_info);
 
   // @debug #get_request_info
-  // printf("Phuong thuc: %s\n", request_info.method);
-  // printf("Path: %s\n", request_info.path);
-  // printf("Params (%d):\n", request_info.total_params);
-  // for (int i = 0; i < request_info.total_params; i += 1) {
-  //   printf("Params key: %s, value: %s\n", request_info.params[i].key, request_info.params[i].value);
-  // }
+   printf("Phuong thuc: %s\n", request_info.method);
+   printf("Path: %s\n", request_info.path);
+   printf("Params (%d):\n", request_info.total_params);
+   for (int i = 0; i < request_info.total_params; i += 1) {
+     printf("Params key: %s, value: %s\n", request_info.params[i].key, request_info.params[i].value);
+   }
 
   // @debug #get_header
   // char content_type[128];
