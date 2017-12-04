@@ -1,5 +1,29 @@
 // TODO: Bich
 
+// Ham fix %20, %40
+void decode_urlencoded(char str[]) {
+  int len = strlen(str);
+  int j = 0, i = 0;
+  char fixed[len];
+
+  while (i < len) {
+    if (str[i] == '%' && str[i+1] == '2' && str[i+2] == '0') {
+      fixed[j] = ' ';
+      i += 3;
+    } else if (str[i] == '%' && str[i+1] == '4' && str[i+2] == '0') {
+      fixed[j] = '@';
+      i += 3;
+    } else {
+      fixed[j] = str[i];
+      i += 1;
+    }
+    
+    j += 1;
+  }
+  
+  strcpy(str, fixed);
+}
+
 // Routing, kiem tra yeu cau hop le hay khong
 //
 // @param method [String] phuong thuc HTTP
@@ -62,6 +86,7 @@ void split_request(char* buffer, REQUEST& request) {
   if (pointer != NULL) {
     request.body = new char[strlen(pointer)];
     strcpy(request.body, pointer);
+    decode_urlencoded(request.body);
   }
 }
 
