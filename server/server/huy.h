@@ -79,7 +79,6 @@ void get_request_info(char* request_line, char* body, REQUEST_INFO& request_info
   if(isPost(b)){ // POST
     strcpy(request_info.path, b);
     request_info.total_params = getParams(body, request_info);  
-    decode_urlencoded(body);
   }
   else{ // GET
     char params[128];
